@@ -14,17 +14,25 @@
  * limitations under the License.
  */
 
+/**
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
 requirejs.config({
+  baseUrl:'js',
   paths: {
-    joint: '../lib/joint/joint',
-    backbone: '../lib/backbone/backbone',    
-    angular: '../lib/angular/angular',
-    jquery: '../lib/jquery/jquery',
-    bootstrap: '../lib/bootstrap/bootstrap',
-    lodash: '../lib/lodash/lodash.compat',
-    jshint: '../lib/jshint/dist/jshint',
-	floDirectives: './directives',
-	floServices: './services'
+    joint:    '/webjars/jointjs/dist/joint',
+    backbone: '/webjars/backbone/backbone',    
+    domReady: '/webjars/requirejs-domready/domReady',
+    angular:  '/webjars/angular/angular',
+    jquery:   '/webjars/jquery/dist/jquery',
+    bootstrap:'/webjars/bootstrap/bootstrap',
+    lodash:   '/webjars/lodash/lodash', // lodash.compat
+    dagre:    '/webjars/dagre/dist/dagre.core',
+    graphlib: '/webjars/graphlib/graphlib.core',
+    text :    '/webjars/requirejs-text/text',
+    flo :     '/webjars/spring-flo/dist/spring-flo',
+    json5 :   '/webjars/json5/json5'
   },
   map: {
       '*': {
@@ -47,14 +55,29 @@ requirejs.config({
 	bootstrap: {
 		deps: ['jquery']
 	},
+	graphlib: {
+		deps: ['underscore']
+	},
+	dagre: {
+		deps: ['graphlib', 'underscore']
+	},	
 	joint: {
 	    deps: ['jquery', 'underscore', 'backbone'],
 	},
 	underscore: {
 	    exports: '_'
 	},	
-	jshint: {
-		deps: ['lodash']
-	}  
+    'flo': {
+    	deps: ['angular', 'jquery', 'joint', 'underscore']
+    }
   }
+});
+
+define(['require','angular'], function (require, angular) {
+        'use strict';
+         require(['domReady!', 'flosi-app'], 
+           function (document) {
+        	 angular.bootstrap(document, ['floSiApp']);
+           }
+      );
 });
